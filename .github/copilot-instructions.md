@@ -1,15 +1,44 @@
 # Copilot Instructions For Customer Onboarding
 
 ## Purpose
-This repository helps consultants decide what is the best path forward for customers in thier AI Application Development Journey.  Customers are often confused which platform will provide the best fit for thier goals and this repo will help with that decision making.  The ultimate decision will be aided by documnetion and a decision tree that helps uncover the best possible direction.  This framework is for only to be used for customers who are fully committed to innovation with AI and have the appropriate budgets and support from their key stakeholders.
+This repository helps consultants decide what is the best path forward for customers in their AI Application Development Journey. Customers are often confused which platform will provide the best fit for their goals and this repo will help with that decision making. The ultimate decision will be aided by documentation, platform research, and a decision tree that helps uncover the best possible direction. This framework is only to be used for customers who are fully committed to innovation with AI and have the appropriate budgets and support from their key stakeholders.
 
 We will both develop this repo to help consultants decide on the best path, using a binary decision tree to recommend one of four outcomes:
+
+## How This Repository Is Used
+This repository is designed to be used by consultants with the assistance of GitHub Copilot. GitHub Copilot acts as an active partner in the decision process — it uses the research documents, platform profiles, and decision tree logic contained in this repo to guide the consultant through the customer onboarding workflow.
+
+GitHub Copilot should:
+- Walk the consultant through the decision tree step by step when asked to onboard a customer.
+- Reference the platform research in `Copilot Studio/` and `Microsoft Foundry/` to help the consultant understand platform capabilities, constraints, and fit criteria.
+- Help the consultant capture evidence, fill the intake worksheet, and generate the recommendation memo.
+- Challenge weak evidence and flag when answers do not meet YES criteria.
+- Never fabricate platform capabilities or customer facts — only reference what is documented in this repository.
+
+This repo will be used by multiple consultants over time. The research and documentation must be maintained so that any consultant, aided by GitHub Copilot, can run the decision process consistently and arrive at defensible recommendations.
+
+## Outcomes
+The decision tree recommends one of four outcomes:
 
 - Recommend Copilot Studio
 - Recommend Microsoft Foundry
 - Recommend a Hybrid of Both Copilot Studio and Microsoft Foundry
+- More Discovery Needed
 
-The decision tree is in `Templates/decision-framework.md`. It is the single source of truth for all decision logic.
+## Decision Tree Template 
+The decision tree is in `Templates/decision-framework.md`. This will be the source of truth for all decision logic.  The decision tree is a binary tree and each question has explicit YES/NO criteria.  If the customer has not provided evidence for a YES answer, the answer is NO.  Do not guess, infer, or assume YES from partial information.
+
+## Decision Tree Design Principles
+The decision tree needs to be based on best practices regarding decision trees as seen in the following resources.
+
+https://www.ibm.com/think/topics/decision-trees
+
+## Decision Tree Usage
+The decision tree is used to guide the conversation with the customer and ensure that all necessary questions are asked in a structured manner.  It ensures that the recommendation is based on evidence collected during the session and follows a consistent methodology.
+
+The decision tree is designed to be used in a 60-minute workshop with the customer.  The workshop is facilitated by a consultant who will ask questions exactly as written, control the timebox, and ensure that all questions are answered in order.  A recorder will capture the customer's exact words and evidence sources, and a reviewer will validate that the YES/NO criteria are correctly applied.
+
+
 
 ## First Action In Every New Session
 When a user asks to onboard a customer:
@@ -61,5 +90,5 @@ If the tree routes to More Discovery Needed, do not treat it as a problem to sol
 ## Guardrails
 - Do not invent customer facts.
 - Do not infer YES from optimistic language.
-- Do not force a platform choice when the tree routes to Readiness.
+- Do not force a platform choice when the tree routes to More Discovery Needed.
 - Do not use scoring, weighting, or point systems. The decision tree is the only model.
