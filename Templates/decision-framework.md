@@ -38,7 +38,7 @@ Do not skip questions. Do not reorder questions. Do not override routing.
 flowchart TD
     %% Styling
     classDef gate fill:#1B3A5C,stroke:#0F2440,color:#fff,font-weight:bold
-    classDef question fill:#FAFAFA,stroke:#999,color:#222,font-weight:normal
+    classDef question fill:#FAFAFA,stroke:#999,color:#222
     classDef copilot fill:#7B4FB5,stroke:#5A3A8A,color:#fff,font-weight:bold
     classDef foundry fill:#0063B1,stroke:#004578,color:#fff,font-weight:bold
     classDef hybrid fill:#107C10,stroke:#0B5E0B,color:#fff,font-weight:bold
@@ -46,60 +46,60 @@ flowchart TD
     classDef track fill:#FFB900,stroke:#CC9400,color:#1a1a1a,font-weight:bold
 
     %% Gate 1: Viability
-    G1[/"GATE 1: VIABILITY"/]:::gate
-    Q11{"Q1.1\nPrerequisites viable\nwithin 10 business days?"}:::question
+    G1["GATE 1: VIABILITY"]:::gate
+    Q11{"Q1.1: Prerequisites viable<br/>within 10 business days?"}:::question
     G1 --> Q11
-    Q11 -->|"Both fail"| R1([MORE DISCOVERY NEEDED]):::readiness
-    Q11 -->|"One or both pass"| G2
+    Q11 -->|Both fail| R1(["MORE DISCOVERY NEEDED"]):::readiness
+    Q11 -->|One or both pass| G2
 
     %% Gate 2: Accountability
-    G2[/"GATE 2: ACCOUNTABILITY"/]:::gate
+    G2["GATE 2: ACCOUNTABILITY"]:::gate
     G2 --> Q21
-    Q21{"Q2.1\nNamed post-launch\nowner confirmed?"}:::question
-    Q21 -->|"No"| R2([MORE DISCOVERY NEEDED]):::readiness
-    Q21 -->|"Yes"| Q22
-    Q22{"Q2.2\nDay-1 mandatory controls\ndefined with owner?"}:::question
-    Q22 -->|"No"| R3([MORE DISCOVERY NEEDED]):::readiness
-    Q22 -->|"Yes"| G3
+    Q21{"Q2.1: Named post-launch<br/>owner confirmed?"}:::question
+    Q21 -->|No| R2(["MORE DISCOVERY NEEDED"]):::readiness
+    Q21 -->|Yes| Q22
+    Q22{"Q2.2: Day-1 controls<br/>defined with owner?"}:::question
+    Q22 -->|No| R3(["MORE DISCOVERY NEEDED"]):::readiness
+    Q22 -->|Yes| G3
 
     %% Gate 3: Control Depth
-    G3[/"GATE 3: CONTROL DEPTH"/]:::gate
+    G3["GATE 3: CONTROL DEPTH"]:::gate
     G3 --> Q31
-    Q31{"Q3.1\nDeep model/runtime/eval\ncontrol mandatory NOW?"}:::question
-    Q31 -->|"YES - needs code-level control"| FT[["FOUNDRY TRACK"]]:::track
-    Q31 -->|"NO - platform-managed is fine"| CT[["COPILOT TRACK"]]:::track
+    Q31{"Q3.1: Deep model/runtime/eval<br/>control mandatory NOW?"}:::question
+    Q31 -->|YES| FT["FOUNDRY TRACK"]:::track
+    Q31 -->|NO| CT["COPILOT TRACK"]:::track
 
     %% Foundry Track
     FT --> Q41
-    Q41{"Q4.1\nEngineering owner confirmed\nfor platform operations?"}:::question
-    Q41 -->|"No"| R4([MORE DISCOVERY NEEDED]):::readiness
-    Q41 -->|"Yes"| Q42
-    Q42{"Q4.2\nAlso need business-facing\ncopilots this phase?"}:::question
-    Q42 -->|"No"| OUT_F([RECOMMEND\nMICROSOFT FOUNDRY]):::foundry
-    Q42 -->|"Yes"| Q43
-    Q43{"Q4.3\nCan fund + staff\nsplit ownership?"}:::question
-    Q43 -->|"Yes"| OUT_H1([RECOMMEND\nHYBRID]):::hybrid
-    Q43 -->|"No"| R5([MORE DISCOVERY NEEDED]):::readiness
+    Q41{"Q4.1: Engineering owner<br/>confirmed for ops?"}:::question
+    Q41 -->|No| R4(["MORE DISCOVERY NEEDED"]):::readiness
+    Q41 -->|Yes| Q42
+    Q42{"Q4.2: Also need business<br/>copilots this phase?"}:::question
+    Q42 -->|No| OUT_F(["RECOMMEND FOUNDRY"]):::foundry
+    Q42 -->|Yes| Q43
+    Q43{"Q4.3: Can fund + staff<br/>split ownership?"}:::question
+    Q43 -->|Yes| OUT_H1(["RECOMMEND HYBRID"]):::hybrid
+    Q43 -->|No| R5(["MORE DISCOVERY NEEDED"]):::readiness
 
     %% Copilot Track
     CT --> Q51
-    Q51{"Q5.1\n80%+ interactions in\nM365/Teams channels?"}:::question
-    Q51 -->|"Yes"| Q52
-    Q51 -->|"No"| Q61
-    Q52{"Q5.2\nBusiness teams own\nongoing changes?"}:::question
-    Q52 -->|"Yes"| OUT_C([RECOMMEND\nCOPILOT STUDIO]):::copilot
-    Q52 -->|"No"| Q61
+    Q51{"Q5.1: 80%+ interactions<br/>in M365/Teams?"}:::question
+    Q51 -->|Yes| Q52
+    Q51 -->|No| Q61
+    Q52{"Q5.2: Business teams<br/>own ongoing changes?"}:::question
+    Q52 -->|Yes| OUT_C(["RECOMMEND COPILOT STUDIO"]):::copilot
+    Q52 -->|No| Q61
 
     %% Ambiguous Path
-    Q61{"Q6.1\nNeed both business copilots\n+ platform depth this phase?"}:::question
-    Q61 -->|"Yes"| Q62
-    Q61 -->|"No"| Q63
-    Q62{"Q6.2\nCan fund + staff\nsplit ownership?"}:::question
-    Q62 -->|"Yes"| OUT_H2([RECOMMEND\nHYBRID]):::hybrid
-    Q62 -->|"No"| R6([MORE DISCOVERY NEEDED]):::readiness
-    Q63{"Q6.3\nPrimary need is\nengineering-led?"}:::question
-    Q63 -->|"Yes"| OUT_F2([RECOMMEND\nMICROSOFT FOUNDRY]):::foundry
-    Q63 -->|"No"| OUT_C2([RECOMMEND\nCOPILOT STUDIO]):::copilot
+    Q61{"Q6.1: Need both business<br/>copilots + platform depth?"}:::question
+    Q61 -->|Yes| Q62
+    Q61 -->|No| Q63
+    Q62{"Q6.2: Can fund + staff<br/>split ownership?"}:::question
+    Q62 -->|Yes| OUT_H2(["RECOMMEND HYBRID"]):::hybrid
+    Q62 -->|No| R6(["MORE DISCOVERY NEEDED"]):::readiness
+    Q63{"Q6.3: Primary need<br/>is engineering-led?"}:::question
+    Q63 -->|Yes| OUT_F2(["RECOMMEND FOUNDRY"]):::foundry
+    Q63 -->|No| OUT_C2(["RECOMMEND COPILOT STUDIO"]):::copilot
 ```
 
 **Outcome Legend:**
