@@ -2,26 +2,37 @@
 
 ## What This Document Is
 This is the decision tree for recommending one of four outcomes:
-- Recommend Copilot Studio
-- Recommend Microsoft Foundry
-- Recommend a Hybrid of Both Copilot Studio and Microsoft Foundry
-- More Discovery Needed
+- **Copilot Studio** — Low-code, business-owned AI agents in M365/Teams
+- **Microsoft Foundry** — Engineering-grade AI platform with full model control
+- **Hybrid** — Both platforms running in parallel with split ownership
+- **More Discovery Needed** — Blockers exist that must be resolved before a recommendation
 
 It uses binary questions with explicit YES/NO criteria. Two facilitators given the same customer answers must arrive at the same outcome.
 
 **Last refreshed: 2026-07-10**
 
 ## How To Use This Framework
-1. Ask each question in order.
+
+**The diagram below is your map.** Each diamond shape is a question you ask the customer. Follow the arrows based on their answer. When you hit a colored rounded box, that's the recommendation.
+
+**For each question**, scroll down to the matching section (same Gate number and Question number) to see:
+- The exact YES/NO criteria to apply
+- Example customer statements that count as YES or NO
+- What routes where
+
+### Rules
+1. Ask each question in order following the arrows.
 2. Apply the YES/NO criteria exactly as written.
 3. Follow the routing instruction.
-4. Stop at the first terminal outcome.
+4. Stop at the first terminal outcome (colored box).
 
 Do not skip questions. Do not reorder questions. Do not override routing.
 
 ---
 
 ## Decision Tree (Visual)
+
+> **How to read this diagram:** Start at the top. Each gate (dark blue) leads to a question (diamond). Follow YES/NO arrows until you reach a colored outcome box. Then scroll to that Gate's detailed section below for the full criteria.
 
 ```mermaid
 flowchart TD
@@ -102,279 +113,335 @@ flowchart TD
 
 ---
 
-## Decision Tree (Detailed Questions)
+## Detailed Questions & Criteria
 
-### Gate 1: Viability
-
-**Question 1.1: Are all required platform prerequisites either Active or confirmable within 10 business days?**
-
-Required prerequisites (based on platform research):
-- **For Foundry path:** Azure subscription exists, Foundry RBAC is assignable, target region/model/features are available (30+ regions; verify via region support docs), named engineering owner identified.
-- **For Copilot Studio path:** M365 tenant is aligned, Copilot Studio licensing (Copilot Credits / message packs) is in place or purchasable, named business owner identified.
-
-YES criteria (all must be true):
-- Each prerequisite has a named owner who confirmed its status.
-- Evidence source is documented (system record, admin confirmation, or portal verification).
-- Any "within 10 days" item has a committed target date.
-
-NO criteria (any one is sufficient):
-- Any required prerequisite has no owner.
-- Any required prerequisite has no evidence source.
-- Any required prerequisite has no committed date and is not currently active.
-- Customer states "we should be able to" or "probably" without verification.
-
-Routing:
-- If NO for Foundry prerequisites only --> Foundry is eliminated. Continue to Question 1.2.
-- If NO for Copilot prerequisites only --> Copilot Studio is eliminated. Continue to Question 1.2.
-- If NO for both --> **OUTCOME: More Discovery Needed.** Stop.
-- If YES for both --> Continue to Question 2.1.
+> Each section below corresponds to a question diamond in the diagram above. The Gate numbers match. Use these criteria to determine whether the answer is YES or NO.
 
 ---
 
-**Question 1.2: Is at least one platform path still viable?**
+### Gate 1: Viability
 
-YES criteria:
-- At least one platform (Copilot Studio or Foundry) passed prerequisite validation.
+#### Q1.1: Are platform prerequisites Active or confirmable within 10 business days?
 
-NO criteria:
-- Both platforms failed prerequisite validation.
+**What you're checking:** Can the customer actually USE the platform they'd need? Do the technical prerequisites exist?
 
-Routing:
-- If NO --> **OUTCOME: More Discovery Needed.** Stop.
-- If YES --> Continue to Question 2.1 (constrained to the viable path).
+| Platform | What Must Be True |
+|---|---|
+| **Foundry** | Azure subscription exists, RBAC assignable, target region/model available, engineering owner named |
+| **Copilot Studio** | M365 tenant aligned, Copilot Studio licensing in place or purchasable, business owner named |
+
+**Answer YES if:**
+- Each prerequisite has a named owner who confirmed its status
+- There's documented evidence (portal screenshot, admin email, system record)
+- Any pending items have a committed date within 10 days
+
+**Answer NO if:**
+- Anyone says "we should be able to" or "probably" without proof
+- No one owns a prerequisite
+- No evidence exists — just verbal assurances
+
+> **Example YES:** "Our Azure admin Sarah confirmed the subscription is active. She verified GPT-4.1 is available in East US 2. Screenshot attached."
+>
+> **Example NO:** "We think we have an Azure subscription somewhere. IT should be able to set it up."
+
+**Where it routes:**
+- NO for both platforms --> **More Discovery Needed** (stop)
+- NO for one platform --> That platform is eliminated; continue to Q2.1
+- YES for one or both --> Continue to Q2.1
+
+---
+
+#### Q1.2: Is at least one platform path still viable?
+
+If Q1.1 eliminated one platform, that's fine — we continue with the survivor. If both failed, stop here.
+
+**Where it routes:**
+- Both failed --> **More Discovery Needed** (stop)
+- At least one survived --> Continue to Q2.1 (constrained to viable path)
 
 ---
 
 ### Gate 2: Accountability
 
-**Question 2.1: Is there a named person accountable for post-launch operations?**
+#### Q2.1: Is there a named person accountable for post-launch operations?
 
-YES criteria (all must be true):
-- A specific individual (not a team name, not "TBD") is identified.
-- That person has confirmed they accept this accountability.
-- Their role and escalation path are documented.
+**What you're checking:** Someone specific (a human with a name) must own the solution after it ships. Not a team. Not "TBD."
 
-NO criteria (any one is sufficient):
-- Owner is unnamed ("IT will handle it," "we'll figure that out").
-- Owner is named but has not confirmed acceptance.
-- No escalation path exists.
+**Answer YES if:**
+- A specific individual is named (first and last name)
+- That person has confirmed they accept this responsibility
+- There's a defined escalation path if things go wrong
 
-Routing:
-- If NO --> **OUTCOME: More Discovery Needed.** Stop.
-- If YES --> Continue to Question 2.2.
+**Answer NO if:**
+- The answer is vague ("IT will handle it," "we'll figure it out later")
+- Someone is named but hasn't actually agreed to own it
+- There's no escalation plan
+
+> **Example YES:** "Marcus Chen, our platform engineering lead, has confirmed he'll own Foundry operations. He reports to the VP of Engineering."
+>
+> **Example NO:** "The DevOps team will probably take this on. We haven't talked to them yet."
+
+**Where it routes:**
+- NO --> **More Discovery Needed** (stop)
+- YES --> Continue to Q2.2
 
 ---
 
-**Question 2.2: Are day-1 mandatory controls explicitly defined?**
+#### Q2.2: Are day-1 mandatory controls explicitly defined?
 
-Day-1 mandatory controls means: security, compliance, or governance requirements that must be in place before the solution goes live.
+**What you're checking:** Does the customer know EXACTLY what security/compliance requirements must be live on day 1? Vague "security matters" doesn't count.
 
-Examples by platform (from research):
-- **Copilot Studio supports:** Entra ID auth, DLP policies, environment isolation, CMK, Purview audit logs, Sentinel monitoring, sensitivity labels, Customer Lockbox.
-- **Foundry supports:** Azure RBAC, VNet/private endpoints, CMK, content safety filters, Azure Policy, Azure Monitor audit logging, data residency (30+ regions), managed identity.
-- **Only Foundry supports:** Private networking (VNet integration), region-specific data residency control, custom content safety configuration.
+**Controls each platform supports (from research):**
 
-YES criteria (all must be true):
-- Customer has stated specific controls by name.
-- Each control has a defined implementation approach.
-- Each control has a named owner.
+| Control | Copilot Studio | Foundry |
+|---|---|---|
+| Identity (Entra ID) | Yes | Yes (managed identity) |
+| DLP policies | Yes | Via Azure Policy |
+| VNet / Private endpoints | **No** | Yes |
+| Customer-managed keys (CMK) | Yes | Yes |
+| Audit logging | Purview + Sentinel | Azure Monitor |
+| Data residency control | Geography-based (Microsoft-managed) | Region-specific (customer-controlled, 30+ regions) |
+| Content safety filters | Platform-managed | Configurable per deployment |
 
-NO criteria (any one is sufficient):
-- Customer says "security is important" without naming specific controls.
-- Controls are named but no implementation approach exists.
-- Controls are named but no owner is assigned.
+**Answer YES if:**
+- Customer names specific controls ("We need VNet isolation and CMK")
+- Each control has an implementation plan ("We'll use private endpoints in East US 2")
+- Each control has an owner ("Infosec lead Priya owns this")
 
-Routing:
-- If NO --> **OUTCOME: More Discovery Needed.** Stop.
-- If YES --> Continue to Question 3.1.
+**Answer NO if:**
+- Customer says "security is important" but can't name specific controls
+- Controls are named but there's no plan for implementing them
+- No one owns the control implementation
+
+> **Example YES:** "We require private endpoints, CMK, and SOC 2 audit trails. Our CISO's team owns security controls and has documented the requirements."
+>
+> **Example NO:** "Security is a top priority for us. We'll need to make sure it's secure."
+
+**Where it routes:**
+- NO --> **More Discovery Needed** (stop)
+- YES --> Continue to Q3.1
 
 ---
 
 ### Gate 3: Control Depth (Primary Routing)
 
-**Question 3.1: Is deep model, runtime, or evaluation control mandatory in this phase?**
+#### Q3.1: Is deep model, runtime, or evaluation control mandatory in this phase?
 
-"Deep control" means the customer requires capabilities that Copilot Studio CANNOT provide (based on current research). Specifically, ANY of:
+**What you're checking:** This is THE key routing question. Does the customer need engineering-grade control that only Foundry provides? Or are Copilot Studio's built-in capabilities sufficient?
 
-| Deep Control Need | What Foundry Provides | What Copilot Studio Provides |
+**Use this table** — if the customer's need appears in the left column, the answer is YES:
+
+| Customer says they need... | Foundry provides | Copilot Studio provides | Verdict |
+|---|---|---|---|
+| "We must choose between different AI models" | Full model catalog (GPT-5, o3, DeepSeek, etc.) | Single platform-managed model | **YES** |
+| "We need to evaluate model quality before release" | Batch eval, custom graders, AI Red Teaming | Not available | **YES** |
+| "We need to write custom orchestration code" | SDK (Python, C#, JS, Java) + MCP | Generative orchestration (AI-managed) | **YES** |
+| "We need guaranteed latency/throughput SLOs" | PTU, custom monitoring, autoscaling | Platform quotas only | **YES** |
+| "We need to fine-tune a model on our data" | SFT, DPO, RFT | Not available | **YES** |
+| "We need private networking / VNet" | VNet + private endpoints | Not available (SaaS) | **YES** |
+| "We need agents that call other agents with custom routing logic" | Code-controlled delegation | AI-selected only (by description) | **YES** |
+
+**But if the customer says...**
+| Customer says they need... | Copilot Studio handles it | Verdict |
 |---|---|---|
-| Select, compare, or switch between foundation models | Extensive model catalog (GPT-5 series, o3, DeepSeek, Meta, Mistral, model-router) | Single platform-managed model (no choice) |
-| Structured evaluation pipelines before release | Batch eval, custom graders, quality gates, AI Red Teaming Agent | Not available |
-| Imperative code-level orchestration | SDK in Python, C#, JavaScript, Java + MCP Server | Generative orchestration (AI-managed, not code-controlled) |
-| Custom SLOs on model inference | Custom monitoring, autoscaling, PTU for guaranteed throughput | Platform-managed quotas only |
-| Fine-tune a model | SFT, DPO, RFT with dataset curation from traces | Not available |
-| Programmatic multi-agent routing | Code-controlled agent-to-agent delegation with custom logic | Child/connected agents (AI-selected by description only) |
-| Private networking | VNet integration, private endpoints | Not available (SaaS) |
+| "We need an agent that answers questions from our SharePoint" | Generative answers + 500 knowledge sources | **NO** |
+| "We need it to call APIs and trigger workflows" | Agent Flows + 1000+ connectors + HTTP actions | **NO** |
+| "We need multiple agents working together" | Child/connected agents (AI-selected) | **NO** |
+| "We need it to handle complex multi-step tasks" | Generative orchestration chains tools/topics automatically | **NO** |
+| "We need it in Teams" | One-click publish | **NO** |
 
-**Important:** Copilot Studio now supports generative orchestration (AI-selected tools/topics/agents), child/connected agents, 500 knowledge sources, and Agent Flows. If the customer's needs are met by these capabilities, Q3.1 = NO.
+**Answer YES if:**
+- Customer provides a concrete example mapping to the first table
+- The need is for THIS phase (not "someday")
 
-YES criteria:
-- Customer provides at least one concrete example of a control they must exercise in this phase.
-- The example maps to the "Deep Control Need" column above and cannot be satisfied by Copilot Studio.
+**Answer NO if:**
+- Customer can't give a concrete example
+- Their examples are covered by the second table
+- They say "we might need this later" (future ≠ now)
 
-NO criteria:
-- Customer cannot provide a concrete example.
-- Customer's examples can be satisfied by Copilot Studio's generative orchestration, connectors, knowledge grounding, child agents, or Agent Flows.
-- Customer says "we might need this later" (future need is not current-phase mandatory).
+> **Example YES:** "We must compare GPT-5 against Mistral for accuracy on our legal documents before choosing. We need evaluation scores above 0.85 on our test set."
+>
+> **Example NO:** "We want an intelligent agent that can answer employee questions from our SharePoint site and create tickets in ServiceNow."
 
-Routing:
-- If YES --> Continue to Question 4.1 (Foundry track).
-- If NO --> Continue to Question 5.1 (Copilot track).
+**Where it routes:**
+- YES --> **Foundry Track** (Q4.1)
+- NO --> **Copilot Track** (Q5.1)
 
 ---
 
 ### Gate 4: Foundry Track
 
-**Question 4.1: Is a named engineering owner confirmed for platform operations?**
+#### Q4.1: Is a named engineering owner confirmed for platform operations?
 
-Context (from research): Foundry requires engineering team ownership -- all changes require code deployment, SDK development (Python/C#/JS/Java), and structured release governance. There is no self-service portal for non-technical users.
+**What you're checking:** Foundry requires an engineering team to run it — all changes need code deployments, SDK work, and structured releases. Is someone confirmed to do this?
 
-YES criteria (all must be true):
-- A specific engineer or engineering lead is named.
-- They have confirmed capacity to own runtime, incident response, and release governance.
-- There is a defined on-call or support model.
+**Answer YES if:**
+- A specific engineer/lead is named
+- They've confirmed capacity for runtime ops, incident response, and releases
+- There's a support/on-call model defined
 
-NO criteria (any one is sufficient):
-- No engineering owner is named.
-- Named owner has not confirmed capacity.
-- No support model exists.
+**Answer NO if:**
+- No one is named
+- Someone's named but hasn't confirmed they have bandwidth
+- There's no support model
 
-Routing:
-- If NO --> **OUTCOME: More Discovery Needed.** Stop.
-- If YES --> Continue to Question 4.2.
+> **Example YES:** "Alex Rivera, senior platform engineer, will own the Foundry runtime. He has 3 engineers on his team and they'll rotate on-call weekly."
+>
+> **Example NO:** "We'll hire someone for this. We're posting the role next quarter."
 
----
-
-**Question 4.2: Does the organization also require business-facing copilot experiences in this same phase?**
-
-"Business-facing copilot" means: low-code, business-owned conversational or workflow automation delivered through M365/Teams channels in the same delivery phase. Examples: HR FAQ bot, IT helpdesk, employee self-service, internal process automation with Agent Flows.
-
-YES criteria:
-- Customer has identified specific business-facing use cases that must be delivered concurrently.
-- These use cases require business-team ownership (not engineering ownership).
-- These use cases are scoped for the same delivery timeline.
-
-NO criteria:
-- No concurrent business-facing copilot use cases exist.
-- Business use cases are planned for a later phase.
-- All use cases are engineering-owned.
-
-Routing:
-- If YES --> Continue to Question 4.3.
-- If NO and Foundry prerequisites passed --> **OUTCOME: Recommend Microsoft Foundry.** Stop.
-- If NO and Foundry prerequisites failed --> **OUTCOME: More Discovery Needed.** Stop.
+**Where it routes:**
+- NO --> **More Discovery Needed** (stop)
+- YES --> Continue to Q4.2
 
 ---
 
-**Question 4.3: Can the organization fund and staff split ownership (business team + engineering team) simultaneously?**
+#### Q4.2: Does the organization also need business-facing copilots in this same phase?
 
-Context (from research): Hybrid requires two parallel workstreams:
-- Copilot Studio: Copilot Credits licensing, business admin, Power Platform environment.
-- Foundry: Azure subscription, engineering team, SDK development, quota tier management.
+**What you're checking:** Beyond the engineering platform, do they ALSO need low-code agents owned by business teams (HR bots, IT helpdesk, etc.) delivered at the same time?
 
-YES criteria (all must be true):
-- Budget exists for both a Copilot Studio workstream and a Foundry workstream.
-- Named owners exist for each workstream.
-- A governance model is defined for how the two workstreams coordinate.
+**Answer YES if:**
+- They've named specific business-facing use cases (FAQ bot, process automation)
+- Those use cases need business-team ownership (not engineering)
+- They're scoped for the same timeline as the Foundry work
 
-NO criteria (any one is sufficient):
-- Budget covers only one workstream.
-- Only one owner exists across both.
-- No coordination model is defined.
+**Answer NO if:**
+- No business-facing copilot use cases exist right now
+- Business use cases are planned for a later phase
+- All use cases are engineering-owned
 
-Routing:
-- If YES --> **OUTCOME: Recommend a Hybrid of Both Copilot Studio and Microsoft Foundry.** Stop.
-- If NO --> **OUTCOME: More Discovery Needed.** Stop.
+> **Example YES:** "While engineering builds our custom RAG pipeline in Foundry, HR also needs an employee benefits bot in Teams by Q3. The HR team will own it."
+>
+> **Example NO:** "Everything we're building is API-first and engineering-owned."
+
+**Where it routes:**
+- NO --> **Recommend Microsoft Foundry** (stop)
+- YES --> Continue to Q4.3
+
+---
+
+#### Q4.3: Can the organization fund and staff split ownership simultaneously?
+
+**What you're checking:** Running both platforms means two workstreams, two budgets, two owners, and a coordination model. Can they actually do that?
+
+**Answer YES if:**
+- Budget confirmed for both (Copilot Credits + Azure compute/tokens)
+- Named owner for each workstream
+- Defined coordination model between the two
+
+**Answer NO if:**
+- Budget covers only one
+- Only one person spans both (they'll be overwhelmed)
+- No plan for how the workstreams talk to each other
+
+> **Example YES:** "We have budget approved for both. Marcus owns Foundry, Lisa owns Copilot Studio. They meet weekly to align on shared knowledge sources."
+>
+> **Example NO:** "We have one budget line for AI. We'll figure out who does what."
+
+**Where it routes:**
+- YES --> **Recommend Hybrid** (stop)
+- NO --> **More Discovery Needed** (stop)
 
 ---
 
 ### Gate 5: Copilot Track
 
-**Question 5.1: Will 80% or more of end-user interactions occur in M365 or Teams channels?**
+#### Q5.1: Will 80%+ of end-user interactions occur in M365 or Teams channels?
 
-Context (from research): Copilot Studio provides one-click publish to Teams, native M365 Copilot extension (declarative agent/plugin), and web chat widget. Foundry requires Bot Framework integration for Teams -- it is not native.
+**What you're checking:** Is the primary user experience inside Microsoft 365? Copilot Studio shines here (one-click Teams publish, native M365 Copilot extension). Foundry requires Bot Framework integration for Teams.
 
-YES criteria:
-- Customer confirms the primary user experience is Teams, Outlook, SharePoint, or other M365 surface.
-- Customer can name the specific channel(s) where users will interact.
+**Answer YES if:**
+- Primary UX is Teams, Outlook, SharePoint, or M365 Copilot
+- Customer can name the specific channel(s)
 
-NO criteria:
-- Primary interaction is a custom web app, mobile app, or non-M365 surface.
-- Customer cannot identify the primary channel.
-- Usage is split without a dominant channel.
+**Answer NO if:**
+- Primary UX is a custom web app, mobile app, or non-M365 surface
+- Customer can't identify the primary channel
+- Usage is evenly split across many surfaces
 
-Routing:
-- If YES --> Continue to Question 5.2.
-- If NO --> Continue to Question 6.1.
+> **Example YES:** "Our 5,000 employees will use this through Teams. That's where they live all day."
+>
+> **Example NO:** "We need this embedded in our customer-facing React web app."
+
+**Where it routes:**
+- YES --> Continue to Q5.2
+- NO --> Continue to Q6.1 (Ambiguous Path)
 
 ---
 
-**Question 5.2: Can business teams own ongoing configuration and change cycles without engineering dependency?**
+#### Q5.2: Can business teams own ongoing changes without engineering?
 
-Context (from research): Copilot Studio enables business-user self-service -- visual topic designer, knowledge source updates, instruction edits, Agent Flows -- all without code deployment. Foundry requires engineering for all changes.
+**What you're checking:** After launch, will the business team (not engineers) maintain the agent? Copilot Studio makes this possible. Foundry does not.
 
-YES criteria (all must be true):
-- A business owner is named for post-launch content and configuration changes.
-- The business owner has the skills or training plan to manage Copilot Studio.
-- Change cycles do not require code deployments or engineering release processes.
+**Answer YES if:**
+- A business owner is named for post-launch changes
+- They have skills or a training plan for Copilot Studio
+- Changes don't require code deployments
 
-NO criteria (any one is sufficient):
-- No business owner is identified for post-launch changes.
-- Changes require engineering releases.
-- The business team lacks skills and no training plan exists.
+**Answer NO if:**
+- No business owner is identified
+- Changes will require engineering releases
+- Business team lacks skills and there's no training plan
 
-Routing:
-- If YES and Copilot prerequisites passed --> **OUTCOME: Recommend Copilot Studio.** Stop.
-- If YES and Copilot prerequisites failed --> **OUTCOME: More Discovery Needed.** Stop.
-- If NO --> Continue to Question 6.1.
+> **Example YES:** "Our Knowledge Manager, Jen, will update the agent's topics and knowledge sources weekly. She's taking the Copilot Studio admin training."
+>
+> **Example NO:** "Our developers will need to update the agent whenever the process changes."
+
+**Where it routes:**
+- YES --> **Recommend Copilot Studio** (stop)
+- NO --> Continue to Q6.1 (Ambiguous Path)
 
 ---
 
 ### Gate 6: Ambiguous Path Resolution
 
-**Question 6.1: Does the use case require both rapid business copilots AND engineered AI platform depth in the same phase?**
+#### Q6.1: Do they need BOTH business copilots AND platform depth in the same phase?
 
-YES criteria (all must be true):
-- There are identified business-workflow use cases that need low-code, business-owned delivery.
-- There are identified platform-engineering use cases that need custom model control, orchestration, or evaluation.
-- Both sets of use cases are scoped for the same delivery phase.
+**What you're checking:** Are there two distinct types of work — low-code business automation AND custom engineering — both needed now?
 
-NO criteria:
-- Only one type of use case exists.
-- The second type is planned for a future phase.
+**Answer YES if:**
+- Both types of use cases are identified
+- Both are scoped for the same delivery timeline
 
-Routing:
-- If YES --> Continue to Question 6.2.
-- If NO --> Continue to Question 6.3.
+**Answer NO if:**
+- Only one type exists
+- The second type is planned for later
 
----
-
-**Question 6.2: Can the organization fund and staff split ownership simultaneously?**
-
-(Same criteria as Question 4.3.)
-
-Routing:
-- If YES --> **OUTCOME: Recommend a Hybrid of Both Copilot Studio and Microsoft Foundry.** Stop.
-- If NO --> **OUTCOME: More Discovery Needed.** Stop.
+**Where it routes:**
+- YES --> Continue to Q6.2
+- NO --> Continue to Q6.3
 
 ---
 
-**Question 6.3: Is the primary need engineering-led with custom orchestration, model control, or strict runtime governance?**
+#### Q6.2: Can they fund and staff split ownership?
 
-YES criteria (any one is sufficient):
-- The dominant use case requires imperative code-level orchestration (SDK, not generative orchestration).
-- The dominant use case requires model selection/evaluation control.
-- The dominant use case requires enforced SLOs, PTU, or custom observability beyond Application Insights.
-- The dominant use case requires private networking (VNet/private endpoints).
+(Same as Q4.3 above.)
 
-NO criteria:
-- The dominant use case is workflow automation, knowledge retrieval, or conversational assistance achievable with Copilot Studio's generative orchestration, connectors, Agent Flows, and child agents.
+**Where it routes:**
+- YES --> **Recommend Hybrid** (stop)
+- NO --> **More Discovery Needed** (stop)
 
-Routing:
-- If YES and Foundry prerequisites passed --> **OUTCOME: Recommend Microsoft Foundry.** Stop.
-- If YES and Foundry prerequisites failed --> **OUTCOME: More Discovery Needed.** Stop.
-- If NO and Copilot prerequisites passed --> **OUTCOME: Recommend Copilot Studio.** Stop.
-- If NO and Copilot prerequisites failed --> **OUTCOME: More Discovery Needed.** Stop.
+---
+
+#### Q6.3: Is the primary need engineering-led?
+
+**What you're checking:** For the dominant use case, does it need code-level SDK orchestration, model control, PTU/SLOs, private networking, or evaluation pipelines?
+
+**Answer YES if:**
+- Dominant use case needs imperative code orchestration (not just generative orchestration)
+- OR needs model selection/evaluation
+- OR needs PTU/custom SLOs
+- OR needs VNet/private endpoints
+
+**Answer NO if:**
+- Dominant use case is achievable with Copilot Studio's generative orchestration, connectors, Agent Flows, child agents, and knowledge grounding
+
+> **Example YES:** "We need to build a custom document processing pipeline with model evaluation gates and deploy behind our VNet."
+>
+> **Example NO:** "We need an agent for our field sales team that pulls data from Salesforce and answers questions about accounts."
+
+**Where it routes:**
+- YES --> **Recommend Microsoft Foundry** (stop)
+- NO --> **Recommend Copilot Studio** (stop)
 
 ---
 
